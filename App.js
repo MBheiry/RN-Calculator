@@ -1,21 +1,27 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Calc from './_src/Calc';
+
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+      <View style={css.container}>
+        
+        
+        <Calc />
+
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const css = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    // backgroundColor: 'lightgray',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
 });
