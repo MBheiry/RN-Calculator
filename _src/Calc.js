@@ -26,101 +26,98 @@ class Calc extends Component {
     // -------------------
     // _setOperation = ( opVal )=> ( opVal !== "e" || opVal !== "c" ) ? this.setState({ lastOpration: opVal }) : this.setState({ lastOpration: null })
     _setOperation = ( opVal )=> {
-        if( opVal !== "e" || opVal !== "c" ) {
-            this.setState({ lastOpration: opVal });
-            alert( this.state.lastOpration );
+
+        if ( opVal !== "c") {
+            
+            // if( this.state.tempScreen !==0 && this.state.tempSave !==0 ){
+            if( this.state.tempScreen !==0 && this.state.tempSave ==0 ){
+                
+                this.setState({ 
+                    lastOpration: opVal,
+                    tempSave: this.state.tempScreen, 
+                    tempScreen: 0, 
+                });
+            }
+            else if ( this.state.tempScreen !==0 && this.state.tempSave !==0 ) {
+                this.setState({ 
+                    lastOpration: opVal,
+                    tempSave: this.state.tempScreen, 
+                });
+                this._result();
+                // this.setState({ 
+                //     lastOpration: opVal,
+                // });
+            }
+
+
         }
-        else{ this.setState({ lastOpration: null }) }
+        else{   //  Clear All data here
+            this.setState({
+                tempScreen: 0, 
+                tempSave: 0, 
+                lastOpration: null, 
+            });
+        }
+
+
+
+
+
+    }
+    // -------------------
+    
+    // Fire Operation on click "=" btn.
+    _result = ()=> {
+
+        switch ( this.state.lastOpration ) {
+            case "plus":
+                // _setOperation("plus")
+                this.setState({
+                    tempScreen: parseInt(this.state.tempSave) + parseInt(this.state.tempScreen), 
+                    tempSave: 0, 
+                    lastOpration: null, 
+                }) 
+                break;
+
+            case "min":
+                this.setState({
+                    tempScreen: parseInt(this.state.tempSave) - parseInt(this.state.tempScreen), 
+                    tempSave: 0, 
+                    lastOpration: null, 
+                }) 
+                break;
+
+            case "mul":
+                this.setState({
+                    tempScreen: parseInt(this.state.tempSave) * parseInt(this.state.tempScreen), 
+                    tempSave: 0, 
+                    lastOpration: null, 
+                }) 
+                break;
+
+            case "dev":
+                this.setState({
+                    tempScreen: parseInt(this.state.tempSave) / parseInt(this.state.tempScreen), 
+                    tempSave: 0, 
+                    lastOpration: null, 
+                }) 
+                break;
+
+            // case "c":
+            //     this.setState({
+            //         tempScreen: 0, 
+            //         tempSave: 0, 
+            //         lastOpration: null, 
+            //     }) 
+            //     break;
+
+                
+            default:
+                alert("Please chose one Operation")
+                break;
+        }
     }
         
-    
-    // -------------------
-
-
-    _validStat = ( operation )=> {
-        if( this.state.tempSave !== 0 ) {
-
-            switch ( operation ) {
-                case "plus":
-                    // _setOperation("plus")
-                    this.setState({
-                        lastOpration: "plus", 
-                        tempSave: parseInt(this.state.tempSave) + parseInt(this.state.tempScreen), 
-                        tempScreen: 0, 
-                    }) 
-                    break;
-
-                case "min":
-                    this.setState({
-                        lastOpration: "min",
-                        tempSave: parseInt(this.state.tempSave) - parseInt(this.state.tempScreen), 
-                        tempScreen: 0, 
-                    }) 
-                    break;
-
-                case "mul":
-                    this.setState({
-                        lastOpration: "mul",
-                        tempSave: parseInt(this.state.tempSave) * parseInt(this.state.tempScreen), 
-                        tempScreen: 0, 
-                    }) 
-                    break;
-
-                case "dev":
-                    this.setState({
-                        lastOpration: "dev",
-                        tempSave: parseInt(this.state.tempSave) / parseInt(this.state.tempScreen), 
-                        tempScreen: 0, 
-                    }) 
-                    break;
-
-                // case "e":
-                //     this._validStat( toString(this.state.lastOpration) )
-                //         // alert( this.state.lastOpration )
-                //         // ( this.state.tempScreen !== 0 && this.state.tempSave !== 0 ) ? 
-                //         //     this.setState({ tempScreen: this.state.tempSave,  tempSave: 0, lastOpration: null }) 
-                //         //     :
-                //         //     alert("add numbers")
-                //     break;
-
-                case "c":
-                    this.setState({ tempSave: 0, tempScreen: 0, lastOpration: null })
-                    break;
-            
-                default:
-                    alert("ddd")
-                    break;
-            }
-            
-        }else{
-            // this.setState({ tempSave: this.state.tempScreen, tempScreen: 0, })
-
-            switch ( operation ) {
-
-                // case "e":
-                //     this._validStat( toString(this.state.lastOpration) )
-                //         // alert( this.state.lastOpration )
-                //         // ( this.state.tempScreen !== 0 && this.state.tempSave !== 0 ) ? 
-                //         //     this.setState({ tempScreen: this.state.tempSave,  tempSave: 0, lastOpration: null }) 
-                //         //     :
-                //         //     alert("add numbers")
-                //     break;
-
-                case "c":
-                    this.setState({ tempSave: 0, tempScreen: 0, lastOpration: null })
-                    break;
-            
-                default:
-                    this.setState({ 
-                        tempSave: this.state.tempScreen, 
-                        tempScreen: 0, 
-                        lastOpration: operation, 
-                    })
-                    break;
-            }
-        }
-    }
-    
     // -------------------
     _tempAppend = ( tempVal )=> {
         ( this.state.tempScreen !== 0 ) ? 
@@ -142,6 +139,9 @@ class Calc extends Component {
 
                 {/* Temp Val */}
                 <Text style={{ fontSize: 20, paddingHorizontal: 5, color: 'gray' }} >{ this.state.tempSave }</Text>
+
+                {/* Temp Operation */}
+                <Text style={{ fontSize: 20, paddingHorizontal: 5, color: 'gray' }} >{ this.state.lastOpration }</Text>
                 
                 {/* Main Screen */}
                 <Text style={{ fontSize: 70, paddingHorizontal: 5, }} >{ this.state.tempScreen }</Text>
@@ -163,12 +163,13 @@ class Calc extends Component {
                     <View style={css.calcFun} >
                         {/* <CalcBtn num="+" style={{ height: 130, }} onPress={ ()=> this._validStat('plus')  }  /> */}
                         <CalcBtn num="+" style={{ height: 130, }} onPress={ ()=> this._setOperation('plus')  }  />
-                        <CalcBtn num="=" style={{ height: 130, backgroundColor: 'orange',  }} textStyly={{ color: '#fff', }} onPress={ ()=> this._validStat('e')  }  />
+                        {/* <CalcBtn num="=" style={{ height: 130, backgroundColor: 'orange',  }} textStyly={{ color: '#fff', }} onPress={ ()=> this._validStat('e')  }  /> */}
+                        <CalcBtn num="=" style={{ height: 130, backgroundColor: 'orange',  }} textStyly={{ color: '#fff', }} onPress={ ()=> this._result()  }  />
                         
-                        <CalcBtn num="-" onPress={ ()=> this._validStat('min')  }  />
-                        <CalcBtn num="*" onPress={ ()=> this._validStat('mul')  }  />
-                        <CalcBtn num="/" onPress={ ()=> this._validStat('dev')  }  />
-                        <CalcBtn num="C" style={{ backgroundColor: 'red' }}  textStyly={{ color: '#fff', }} onPress={ ()=> this._validStat('c')  }  />
+                        <CalcBtn num="-" onPress={ ()=> this._setOperation('min')  }  />
+                        <CalcBtn num="*" onPress={ ()=> this._setOperation('mul')  }  />
+                        <CalcBtn num="/" onPress={ ()=> this._setOperation('dev')  }  />
+                        <CalcBtn num="C" style={{ backgroundColor: 'red' }}  textStyly={{ color: '#fff', }} onPress={ ()=> this._setOperation('c')  }  />
                     </View>
 
 
