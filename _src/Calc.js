@@ -24,7 +24,14 @@ class Calc extends Component {
     //         .then(response => this.setState({ albums: response.data }) );
     // }
     // -------------------
-    _setOperation = ( opVal )=> ( opVal !== "e" || opVal !== "c" ) ? this.setState({ lastOpration: opVal }) : this.setState({ lastOpration: null })
+    // _setOperation = ( opVal )=> ( opVal !== "e" || opVal !== "c" ) ? this.setState({ lastOpration: opVal }) : this.setState({ lastOpration: null })
+    _setOperation = ( opVal )=> {
+        if( opVal !== "e" || opVal !== "c" ) {
+            this.setState({ lastOpration: opVal });
+            alert( this.state.lastOpration );
+        }
+        else{ this.setState({ lastOpration: null }) }
+    }
         
     
     // -------------------
@@ -35,9 +42,9 @@ class Calc extends Component {
 
             switch ( operation ) {
                 case "plus":
-                    _setOperation("plus")
+                    // _setOperation("plus")
                     this.setState({
-                        // lastOpration: "plus", 
+                        lastOpration: "plus", 
                         tempSave: parseInt(this.state.tempSave) + parseInt(this.state.tempScreen), 
                         tempScreen: 0, 
                     }) 
@@ -45,25 +52,25 @@ class Calc extends Component {
 
                 case "min":
                     this.setState({
+                        lastOpration: "min",
                         tempSave: parseInt(this.state.tempSave) - parseInt(this.state.tempScreen), 
                         tempScreen: 0, 
-                        // lastOpration: "min"
                     }) 
                     break;
 
                 case "mul":
                     this.setState({
+                        lastOpration: "mul",
                         tempSave: parseInt(this.state.tempSave) * parseInt(this.state.tempScreen), 
                         tempScreen: 0, 
-                        // lastOpration: "mul"
                     }) 
                     break;
 
                 case "dev":
                     this.setState({
+                        lastOpration: "dev",
                         tempSave: parseInt(this.state.tempSave) / parseInt(this.state.tempScreen), 
                         tempScreen: 0, 
-                        // lastOpration: "dev"
                     }) 
                     break;
 
@@ -86,7 +93,31 @@ class Calc extends Component {
             }
             
         }else{
-            this.setState({ tempSave: this.state.tempScreen, tempScreen: 0, })
+            // this.setState({ tempSave: this.state.tempScreen, tempScreen: 0, })
+
+            switch ( operation ) {
+
+                // case "e":
+                //     this._validStat( toString(this.state.lastOpration) )
+                //         // alert( this.state.lastOpration )
+                //         // ( this.state.tempScreen !== 0 && this.state.tempSave !== 0 ) ? 
+                //         //     this.setState({ tempScreen: this.state.tempSave,  tempSave: 0, lastOpration: null }) 
+                //         //     :
+                //         //     alert("add numbers")
+                //     break;
+
+                case "c":
+                    this.setState({ tempSave: 0, tempScreen: 0, lastOpration: null })
+                    break;
+            
+                default:
+                    this.setState({ 
+                        tempSave: this.state.tempScreen, 
+                        tempScreen: 0, 
+                        lastOpration: operation, 
+                    })
+                    break;
+            }
         }
     }
     
@@ -130,14 +161,13 @@ class Calc extends Component {
                         <CalcBtn num="0" style={{ width: 60+120+20 }} onPress={ ()=> this._tempAppend("0")  }  />
                     </View>
                     <View style={css.calcFun} >
-                        {/* <CalcBtn num="+" style={{ height: 100, }} onPress={ ()=> this._Plus()  }  /> */}
-                        <CalcBtn num="+" style={{ height: 130, }} onPress={ ()=> this._validStat('plus')  }  />
+                        {/* <CalcBtn num="+" style={{ height: 130, }} onPress={ ()=> this._validStat('plus')  }  /> */}
+                        <CalcBtn num="+" style={{ height: 130, }} onPress={ ()=> this._setOperation('plus')  }  />
                         <CalcBtn num="=" style={{ height: 130, backgroundColor: 'orange',  }} textStyly={{ color: '#fff', }} onPress={ ()=> this._validStat('e')  }  />
                         
-                        <CalcBtn num="-" style={{ }} onPress={ ()=> this._validStat('min')  }  />
-
-                        <CalcBtn num="*" style={{ }} onPress={ ()=> this._validStat('mul')  }  />
-                        <CalcBtn num="/" style={{ }} onPress={ ()=> this._validStat('dev')  }  />
+                        <CalcBtn num="-" onPress={ ()=> this._validStat('min')  }  />
+                        <CalcBtn num="*" onPress={ ()=> this._validStat('mul')  }  />
+                        <CalcBtn num="/" onPress={ ()=> this._validStat('dev')  }  />
                         <CalcBtn num="C" style={{ backgroundColor: 'red' }}  textStyly={{ color: '#fff', }} onPress={ ()=> this._validStat('c')  }  />
                     </View>
 
