@@ -10,7 +10,9 @@ class Calc extends Component {
     // Set your State here
     state = {
         // albums: []
-        tempStat: false,
+        calcDone: true,
+        tempResult: 0,
+
         lastOpration: null,
         tempScreen: 0,
         tempSave: 0,
@@ -27,6 +29,7 @@ class Calc extends Component {
     // _setOperation = ( opVal )=> ( opVal !== "e" || opVal !== "c" ) ? this.setState({ lastOpration: opVal }) : this.setState({ lastOpration: null })
     _setOperation = ( opVal )=> {
 
+        // handel C button.
         if ( opVal !== "c") {
             
             // if( this.state.tempScreen !==0 && this.state.tempSave !==0 ){
@@ -43,19 +46,19 @@ class Calc extends Component {
                     lastOpration: opVal,
                     tempSave: this.state.tempScreen, 
                 });
-                this._result();
-                // this.setState({ 
-                //     lastOpration: opVal,
-                // });
+
+                this._subResult();
+                
             }
 
 
         }
-        else{   //  Clear All data here
+        else{  //  Clear All data here
             this.setState({
                 tempScreen: 0, 
                 tempSave: 0, 
                 lastOpration: null, 
+                calcDone: true, 
             });
         }
 
@@ -65,57 +68,78 @@ class Calc extends Component {
 
     }
     // -------------------
+    // +
+    _getPlus = ( $saved, $screen )=> { this.setState({ tempScreen: parseFloat( $saved ) + parseFloat( $screen ), tempSave: 0, })  }
+    // -------------------
+    // -
+    _getMin = ( $saved, $screen )=> { this.setState({ tempScreen: parseFloat( $saved ) - parseFloat( $screen ), tempSave: 0, })  }
+    // -------------------
+    // x
+    _getMul = ( $saved, $screen )=> { this.setState({ tempScreen: parseFloat( $saved ) * parseFloat( $screen ), tempSave: 0, })  }
+    // -------------------
+    // /
+    _getDev = ( $saved, $screen )=> { this.setState({ tempScreen: parseFloat( $saved ) / parseFloat( $screen ), tempSave: 0, })  }
+    // -------------------
     
     // Fire Operation on click "=" btn.
     _result = ()=> {
 
         switch ( this.state.lastOpration ) {
             case "plus":
-                // _setOperation("plus")
-                this.setState({
-                    tempScreen: parseInt(this.state.tempSave) + parseInt(this.state.tempScreen), 
-                    tempSave: 0, 
-                    lastOpration: null, 
-                }) 
+                this._getPlus( this.state.tempSave, this.state.tempScreen )
                 break;
 
             case "min":
-                this.setState({
-                    tempScreen: parseInt(this.state.tempSave) - parseInt(this.state.tempScreen), 
-                    tempSave: 0, 
-                    lastOpration: null, 
-                }) 
+                this._getMin( this.state.tempSave, this.state.tempScreen )               
                 break;
 
             case "mul":
-                this.setState({
-                    tempScreen: parseInt(this.state.tempSave) * parseInt(this.state.tempScreen), 
-                    tempSave: 0, 
-                    lastOpration: null, 
-                }) 
+                this._getMul( this.state.tempSave, this.state.tempScreen )                
                 break;
 
             case "dev":
-                this.setState({
-                    tempScreen: parseInt(this.state.tempSave) / parseInt(this.state.tempScreen), 
-                    tempSave: 0, 
-                    lastOpration: null, 
-                }) 
+                this._getDev( this.state.tempSave, this.state.tempScreen )                
                 break;
-
-            // case "c":
-            //     this.setState({
-            //         tempScreen: 0, 
-            //         tempSave: 0, 
-            //         lastOpration: null, 
-            //     }) 
-            //     break;
-
                 
             default:
                 alert("Please chose one Operation")
                 break;
         }
+
+        this.setState({ lastOpration: null, calcDone: true, }) 
+        
+
+    }
+        
+    // -------------------
+    _subResult = ()=> {
+
+        let  $saved = this.state.tempSave;
+        let  $screen = this.state.tempScreen;
+        let  $lastOpration = this.state.lastOpration;
+
+        switch ( $lastOpration ) {
+            case "plus":
+                this.setState({ tempSave: parseFloat( $saved ) + parseFloat( $screen ), tempScreen: 0, })
+                break;
+
+            case "min":
+                this.setState({ tempSave: parseFloat( $saved ) - parseFloat( $screen ), tempScreen: 0, })
+                break;
+
+            case "mul":
+                this.setState({ tempSave: parseFloat( $saved ) * parseFloat( $screen ), tempScreen: 0, })
+                break;
+
+            case "dev":
+                this.setState({ tempSave: parseFloat( $saved ) / parseFloat( $screen ), tempScreen: 0, })
+                break;
+                
+            default:
+                alert("Please chose one Operation")
+                break;
+        }
+
     }
         
     // -------------------
@@ -167,7 +191,7 @@ class Calc extends Component {
                         <CalcBtn num="=" style={{ height: 130, backgroundColor: 'orange',  }} textStyly={{ color: '#fff', }} onPress={ ()=> this._result()  }  />
                         
                         <CalcBtn num="-" onPress={ ()=> this._setOperation('min')  }  />
-                        <CalcBtn num="*" onPress={ ()=> this._setOperation('mul')  }  />
+                        <CalcBtn num="x" onPress={ ()=> this._setOperation('mul')  }  />
                         <CalcBtn num="/" onPress={ ()=> this._setOperation('dev')  }  />
                         <CalcBtn num="C" style={{ backgroundColor: 'red' }}  textStyly={{ color: '#fff', }} onPress={ ()=> this._setOperation('c')  }  />
                     </View>

@@ -18,6 +18,8 @@ const css = {
     CalcBtn:{
         borderWidth: 1,
         borderRadius: 2,
+        // borderRadius: 30,
+        
         borderColor: '#000',
         backgroundColor: 'gray',
         
@@ -26,6 +28,7 @@ const css = {
 
         margin: 5,
 
+        // display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         
@@ -43,6 +46,11 @@ const css = {
     btnText:{
         color: '#fff',
         fontSize: 20,
+        padding: 0,
+        margin: 0,
+        // textAlign: 'center',
+        
+        // alignSelf: 'center',
     }
 
 }
