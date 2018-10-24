@@ -18,6 +18,8 @@ class Calc extends Component {
         tempSave: 0,
     };
     // -------------------
+    // -------------------
+
 
     // below function run before rendere component
     // componentWillMount(){
@@ -31,6 +33,9 @@ class Calc extends Component {
 
         // handel C button.
         if ( opVal !== "c") {
+
+            // working on new operation
+            this.setState({ calcDone: false, })
             
             // if( this.state.tempScreen !==0 && this.state.tempSave !==0 ){
             if( this.state.tempScreen !==0 && this.state.tempSave ==0 ){
@@ -144,10 +149,18 @@ class Calc extends Component {
         
     // -------------------
     _tempAppend = ( tempVal )=> {
-        ( this.state.tempScreen !== 0 ) ? 
+        // ( this.state.tempScreen !== 0 ) ? 
+        //     this.setState({ tempScreen: this.state.tempScreen + tempVal }) 
+        //     : 
+        //     this.setState({ tempScreen: tempVal })
+
+        if( this.state.tempScreen !== 0 && this.state.calcDone !== true ) {
+
             this.setState({ tempScreen: this.state.tempScreen + tempVal }) 
-            : 
+        } 
+        else{
             this.setState({ tempScreen: tempVal })
+        }
     }
     
     // -------------------
