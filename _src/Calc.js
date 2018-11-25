@@ -47,13 +47,11 @@ class Calc extends Component {
                 });
             }
             else if ( this.state.tempScreen !==0 && this.state.tempSave !==0 ) {
-                this.setState({ 
-                    lastOpration: opVal,
-                    tempSave: this.state.tempScreen, 
-                });
-
+                this.setState({ lastOpration: opVal, tempSave: this.state.tempScreen });
                 this._subResult();
-                
+            }
+            else if ( this.state.tempScreen ==0 && this.state.tempSave !==0 && this.state.lastOpration !==null ) {
+                this.setState({ lastOpration: opVal });
             }
 
 
@@ -154,11 +152,17 @@ class Calc extends Component {
         //     : 
         //     this.setState({ tempScreen: tempVal })
 
-        if( this.state.tempScreen !== 0 && this.state.calcDone !== true ) {
+        if( this.state.tempScreen !== 0 && this.state.calcDone == false ) {
 
             this.setState({ tempScreen: this.state.tempScreen + tempVal }) 
         } 
+        else if( this.state.tempScreen == 0 && this.state.calcDone == true && this.state.lastOpration == null ) {
+
+            // this.setState({ tempScreen: this.state.tempScreen + tempVal }) 
+            this.setState({ tempScreen: tempVal }) 
+        } 
         else{
+            // this.setState({ tempScreen: tempVal })
             this.setState({ tempScreen: tempVal })
         }
     }
@@ -186,15 +190,15 @@ class Calc extends Component {
                 <View style={css.rowTop} >
 
                     <View style={css.calcBord} >
+                        <CalcBtn num="9" onPress={ ()=> this._tempAppend("9")  } />
+                        <CalcBtn num="8" onPress={ ()=> this._tempAppend("8")  } />
+                        <CalcBtn num="7" onPress={ ()=> this._tempAppend("7")  } />
+                        <CalcBtn num="6" onPress={ ()=> this._tempAppend("6")  } />
+                        <CalcBtn num="5" onPress={ ()=> this._tempAppend("5")  } />
+                        <CalcBtn num="4" onPress={ ()=> this._tempAppend("4")  } />
+                        <CalcBtn num="3" onPress={ ()=> this._tempAppend("3")  } />
+                        <CalcBtn num="2" onPress={ ()=> this._tempAppend("2")  } />
                         <CalcBtn num="1" onPress={ ()=> this._tempAppend("1")  } />
-                        <CalcBtn num="2" onPress={ ()=> this._tempAppend("2")  }  />
-                        <CalcBtn num="3" onPress={ ()=> this._tempAppend("3")  }  />
-                        <CalcBtn num="4" onPress={ ()=> this._tempAppend("4")  }  />
-                        <CalcBtn num="5" onPress={ ()=> this._tempAppend("5")  }  />
-                        <CalcBtn num="6" onPress={ ()=> this._tempAppend("6")  }  />
-                        <CalcBtn num="7" onPress={ ()=> this._tempAppend("7")  }  />
-                        <CalcBtn num="8" onPress={ ()=> this._tempAppend("8")  }  />
-                        <CalcBtn num="9" onPress={ ()=> this._tempAppend("9")  }  />
                         <CalcBtn num="0" style={{ width: 60+120+20 }} onPress={ ()=> this._tempAppend("0")  }  />
                     </View>
                     <View style={css.calcFun} >
